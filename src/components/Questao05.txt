@@ -1,0 +1,46 @@
+O PROPS DRILLING é um problema clássico de códigos que trabalham com hierarquias.
+
+O problema acontece quando um componente de nível superior precisa passar informações para
+componentes de nível inferior (ou vice-versa).
+
+Por exemplo:
+
+<C1>
+    <C2>
+        <C3>
+        </C3>
+    </C2>
+</C1>
+
+Vamos supor que C1 precisa passar uma informação para C3, seu neto.
+A solução mais óbvia é ir passando de um em um até chegar lá.
+
+<C1>
+    info = Any
+    <C2 info>
+        <C3 info>
+            using info
+        </C3>
+    </C2>
+</C1>
+
+Isso funciona, mas é considerado uma má prática, chamada de PROPS DRILLING.
+Essa solução pode gerar códigos grandes e de difícil leitura, além de ser difícil de manter.
+
+Uma solução melhor é usar contextos.
+Contextos são uma forma de passar dados pela árvore de componentes sem explicitar as props em cada nível.
+Primeiro é preciso criar um contexto usando o React.createContext().
+Agora o pai dos componentes provê esse contexto aos filhos encapsulando eles em um Provider.
+O filho que precisar usar a informação, pode acessar ela pelo useContext()
+
+<C1> 
+    info = Any
+    <myContext.Provider value="info">
+        <C2>
+            <C3>
+                info = useContext(myContext)
+                using info
+            </C3>
+        </C2>
+    </myContext.Provider>
+</C1>
