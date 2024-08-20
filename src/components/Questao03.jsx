@@ -7,14 +7,20 @@ const Questao05 = () => {
     const [menor, setMenor] = useState({capital: '', population:  Infinity})
     
     useEffect(() => {
+        // misturo muito then-catch com async-await
+
+        // função assíncrona que retorna uma promessa do axios
         const getData = async () => {
-            return await axios.get("https://restcountries.com/v3.1/region/europe?fields=capital,population")
+            return axios.get("https://restcountries.com/v3.1/region/europe?fields=capital,population")
         }
         
+        // tratando a promessa com then
         getData().then(resposta => {
+            // funcao anonima de callback que busca na resposta a maior e menor capital
             let maior = {capital: '', population: -Infinity}
             let menor = {capital: '', population:  Infinity}
 
+            // transformo o json data em um array e percorro
             Array.from(resposta.data).map((registro) => {
                 if(registro.population <= menor.population)
                     menor = registro
